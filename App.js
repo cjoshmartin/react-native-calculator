@@ -22,7 +22,22 @@ export default class App extends React.Component {
         }
         this.setState({buttons: makeButtons})
     }
+    
+    renderButtons() {
+        let grid = [];
+        
+        for (let i =0; i < inputButtons.length; i++)
+        {
+            let loadRows = [];
+            for (let j =0; j < inputButtons[i].length; j++)
+                loadRows.push( <NumberButton number={inputButtons[i][j]} updateSum={this.setSum.bind(this)}  key={`${i} - ${j}`}/>) 
+            console.log(loadRows)
+            //grid.push(<View style={styles.inputRow} key={"row-" + i}>{loadRows} </View>)
+        } // end of outer loop
 
+        return grid;
+    }
+    
     setSum = (inc) => {
         const settersum =this.state.sum + inc;
         this.setState({sum: settersum})
@@ -30,10 +45,13 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text>The sum of is: {this.state.sum}</Text>
-                {this.state.buttons}
+            <View style={{flex: 1}}>
+                <View style={{flex: 2, backgroundColor: '#193441'}}></View>
+                <View style={{flex: 8, backgroundColor: '#3E606F'}}>
+                    {this.renderButtons()}
+                </View>
             </View>
+
         );
     }
 }
@@ -45,4 +63,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    inputRow: {
+        flex: 1,
+        flexDirection: 'row'
+    }
 });
