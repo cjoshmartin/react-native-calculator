@@ -13,6 +13,10 @@ export default class App extends React.Component {
         let checkvalue =  parseFloat(this.state.sum)
         if (this.state.operands[this.state.operands.length -1] != checkvalue)
             this.state.operands.push(checkvalue)
+        if (this.state.operands >=2)
+        {
+            // TODO
+        }
         // ...
     }
     _addOp(oporator){
