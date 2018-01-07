@@ -10,52 +10,84 @@ export default class App extends React.Component {
     }
 
     _calculate(){
-        let checkvalue =  parseFloat(this.state.sum)
-        if (this.state.operands[this.state.operands.length -1] != checkvalue)
+        let checkvalue =  parseFloat(this.state.sum).toPrecision(6)
             this.state.operands.push(checkvalue)
-        if (this.state.operands >=2)
+        if (this.state.operands.length >=2)
         {
-            // TODO
-        }
-        // ...
-    }
+            const num1 = this.state.operands[0];
+            this.state.operands.shift();
+            const num2 = this.state.operands[0];
+            this.state.operands.shift();
+            
+            switch(this.state.oporators[0]){
+                case '/':
+                    if ( num2 == 0){
+                        this.setState({readOnly:true})
+                        throw 'Unable to divide by zero'
+                    }
+                    this.state.operands.push( num1 / num2)
+                    break;
+                case '*':
+                    this.state.operands.push( num1 * num2)
+                    break;
+                case '-':
+                    this.state.operands.push(num1 - num2)
+                    break;
+                case '+':
+                    this.state.operands.push(num1 + num2)
+                    break;
+                default:
+                    alert('Unexpected input! ' + this.state.oprators[0])
+                    break;
+            } // end of switch
+            this.state.oporators.shift()
+        } // end of checking for size of operands array
+        const sum = parseFloat(this.state.operands[0])
+            this.setState({sum: sum.toPrecision(6) })
+    } // end of _calculate
+
     _addOp(oporator){
         this._calculate()
         this.state.oporators.push(oporator) 
         this.setState({readOnly: true})
-    }
+    } // end of _addOp
+
     _buttonPress (pressed) {
         if (typeof pressed === 'number')
         {
-            this.setState({sum: (this.state.sum != 0 && !this.state.readOnly ) ? this.state.sum +""+pressed : pressed})
+            this.setState({sum: (this.state.sum != 0 && this.state.sum && !this.state.readOnly ) ? this.state.sum +""+pressed : pressed})
             this.setState({readOnly: false})
         }
         else
             switch (pressed){
                 case '.':
-                    if (this.state.sum.indexOf('.')==-1)
-                    this.setState({sum: this.state.sum + '.' })
+                    if (this.state.sum.toString().indexOf('.')==-1)
+                        this.setState({sum: this.state.sum + '.' })
                     break;
-                case 'c':
-                    this.setState({oporators: [], operands: []})
                 case 'ce':
+                    this.setState({oporators: [], operands: []})
+                case 'c':
                     this.setState({sum: 0})
-                break;
+                    break;
                 case '=':
-                    this._calculate() // TODO
+                    this._calculate() 
                     this.setState({oporators: [], operands: []})
                     this.setState({readOnly: true})
+                    break;
+                case '+/-':
+                    if(this.state.sum != 0)
+                    this.setState({sum: parseFloat(this.state.sum) * -1 })
                     break;
                 default:
                     this._addOp(pressed) 
                     break;
-            }
-    }
+            } // end of switch
+    } // end of _buttonPress
 
     _renderInputButtons() {
         let j =0;
         const inputButtons = [
-            ['c', ' ', 'ce', '/'],
+            ['c', '+/-', 'ce', '/'],
             [1, 2, 3, '*'],
             [4, 5, 6, '-'],
             [7, 8, 9, '+'],
@@ -65,17 +97,19 @@ export default class App extends React.Component {
             let i = 0;
             return(
                 <View style={Style.inputRow} key={"row-" + j++}>
-                {
-                    row.map((col) => {
-                            return <InputButton value={col} onPress={this._buttonPress.bind(this, col)} key={i++ + "-" } />
-                    })
-                }
+                    {
+                        row.map((col) => {
+                            return <InputButton value={col} onPress={this._buttonPress.bind(this, col)} key={j + "-" + i++ } />
+                        })
+                    }
                 </View>
             )
         })
     } // end of _renderInputButtons
 
     render() {
+        console.log(this.state)
+
         return (
             <View style={{flex: 1}}>
                 <View style={Style.displayContainer}>
@@ -103,7 +137,7 @@ const Style = StyleSheet.create({
         flex: 1,
         flexDirection: 'row'
     },
-        displayContainer: {
+    displayContainer: {
         flex: 2,
         backgroundColor: '#193441',
         justifyContent: 'center'

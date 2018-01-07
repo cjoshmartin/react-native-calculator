@@ -1,6 +1,5 @@
 // InputButton.js
-
-import React, { Component } from 'react';
+import React from 'react';
 import {
     TouchableHighlight,
     Text,
@@ -8,17 +7,16 @@ import {
 } from 'react-native';
 
 
-export default class InputButton extends Component {
+const InputButton = (props) => {
     
-    render() {
         return (
-            <TouchableHighlight style={Style.inputButton} underlayColor="#193441" onPress={this.props.onPress}>
-                <Text style={Style.inputButtonText}>{this.props.value}</Text>
+            <TouchableHighlight style={Style.inputButton} underlayColor="#193441" onPress={props.onPress}>
+                <Text style={Style.inputButtonText}>{props.value}</Text>
             </TouchableHighlight>
         )
     }
-    
-}
+
+export default InputButton;
 
 var Style = StyleSheet.create({
     inputButton: {
