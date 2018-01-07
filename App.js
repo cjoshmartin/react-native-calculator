@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import NumberButton from './NumberButton.js';
 import InputButton from './InputButton.js';
 
 export default class App extends React.Component {
