@@ -1,11 +1,30 @@
 
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
 
  const NumberButton = (props) => {
     return (
-        <Button title={props.number} color="red" onPress={() => props.updateSum(props.number)} /> 
+        <View style={style.inputButton}>
+            <Text  onPress={() => props.updateSum(props.number)} style={style.inputButtonText} >
+                {props.number}
+            </Text>
+    </View>
     );
   }
 export default NumberButton;
-// onPress={props.setSum(props.number)} />
+
+let style = StyleSheet.create({
+    inputButton: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 0.5,
+        borderColor: '#91AA9D'
+    },
+
+    inputButtonText: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: 'white'
+    }
+})
